@@ -92,3 +92,57 @@
 ---
 
 _Last updated: [Current Date]_
+
+#[derive(Model, Drop, Serde)]
+struct Round {
+// Unique identifier for the round
+round_id: u32,
+
+    // Player information
+    player_address: ContractAddress,
+    player_name: felt252,
+
+    // Audio clip information
+    clip_id: u32,
+    clip_hash: felt252,  // IPFS hash or similar for the audio clip
+
+    // Game state
+    is_completed: bool,
+    start_time: u64,
+    end_time: u64,
+
+    // Player interaction data
+    play_count: u32,     // Number of times the clip was played
+    attempt_count: u32,  // Number of attempts made
+    selected_answer: felt252,
+    is_correct: bool,
+
+    // Scoring
+    points_earned: u32,
+    max_points: u32,     // Maximum possible points for this round
+
+    // Additional metadata
+    difficulty: u32,     // Round difficulty level
+    round_type: felt252, // Type of round (e.g., "standard", "bonus", etc.)
+
+    // Timestamps for analytics
+    first_play_time: u64,
+    last_play_time: u64,
+
+    // Volume settings (stored as percentage)
+    volume_setting: u32,
+
+    // Leaderboard data
+    leaderboard_position: u32,
+    global_rank: u32,
+
+    // Additional game mechanics
+    hints_used: u32,
+    time_bonus: u32,     // Time-based bonus points
+    streak_count: u32,   // Consecutive correct answers
+
+    // Verification data
+    verification_hash: felt252,  // Hash to verify round integrity
+    signature: felt252,         // Player's signature for the round
+
+}

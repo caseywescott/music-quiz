@@ -51,7 +51,7 @@ function App() {
   };
 
   const playAudio = () => {
-    if (isPlaying) return;
+    if (isPlaying) return; // Prevent multiple clicks while playing
     
     setIsPlaying(true);
     const audio = new Audio(questions[current].audio);
@@ -64,8 +64,11 @@ function App() {
       [current]: (prev[current] || 0) + 1
     }));
     
+    // After 1 second, stop playing and reset button
     setTimeout(() => {
       setIsPlaying(false);
+      audio.pause();
+      audio.currentTime = 0;
     }, 1000);
   };
 
@@ -201,77 +204,61 @@ function App() {
           </div>
         </div>
       </div>
-      <div 
-        key={`question-${questionKey}`}
-        className={`quiz-container ${isExiting ? 'exit' : ''} ${isPlaying ? 'playing' : ''} ${showLeaderboard ? 'hidden' : ''}`}
-      >
-        <div className="center-hole"></div>
-        {showConfetti && (
-          <Confetti
-            numberOfPieces={500}
-            recycle={false}
-            gravity={0.3}
-            wind={0.05}
-            colors={['#FFD700', '#FF69B4', '#00FF00', '#FF4500', '#4169E1', '#FF1493', '#7B68EE']}
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              pointerEvents: 'none',
-              animation: 'fadeOut 5s forwards'
-            }}
-            initialVelocityY={0}
-          />
-        )}
-        <div className="beatles-images">
-          <img src="/paul.png" alt="Paul McCartney" />
-          <img src="/john.png" alt="John Lennon" />
-          <img src="/george.png" alt="George Harrison" />
-          <img src="/ringo.png" alt="Ringo Starr" />
-        </div>
-        <h1>🎵 Guess the Song</h1>
+      <div id="wrap">
         <div 
-          className={`center-label ${isPlaying ? 'playing' : ''}`}
-          onClick={playAudio}
+          id="album" 
+          key={`question-${questionKey}`}
+          className={`quiz-container ${isExiting ? 'exit' : ''} ${showLeaderboard ? 'hidden' : ''}`}
         >
-          <div className="play-icon"></div>
-        </div>
-        <div className="options">
-          {questions[current].options.map((opt, i) => (
-            <button
-              key={i}
-              onClick={() => handleAnswer(opt, i)}
-              className={`answer-button ${shakeIndex === i ? 'shake' : ''} ${
-                disabledOptions.includes(i) ? 'disabled' : ''
-              } ${
-                selected && opt === selected && opt === questions[current].correct
-                  ? 'correct'
-                  : selected && opt === selected
-                  ? 'incorrect'
-                  : showCorrectAnswer && opt === questions[current].correct
-                  ? 'correct'
-                  : ''
-              }`}
-              disabled={disabledOptions.includes(i) || showCorrectAnswer}
-            >
-              {opt}
-            </button>
-          ))}
-        </div>
-
-        {showResult && (
-          <div className={`result ${isCorrect ? 'correct' : showCorrectAnswer ? 'incorrect' : 'incorrect'}`}>
-            <p>
-              {isCorrect 
-                ? `✅ Correct! +${calculateScore()} points!` 
-                : showCorrectAnswer 
-                  ? `❌ The correct answer was: ${questions[current].correct}`
-                  : '❌ Wrong!'}
-            </p>
+          <div id="vinyl" className={`vinyl ${isPlaying ? 'playing' : ''}`}>
+            <div className="vinyl-label">
+              <div className="wood-circle">
+                <div className="metal-ring">
+                  <div 
+                    className={`vintage-button ${isPlaying ? 'pressed' : ''}`}
+                    onClick={playAudio}
+                  >
+                    <div className={isPlaying ? 'stop-icon' : 'play-icon'}></div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        )}
+          <div className="options">
+            {questions[current].options.map((opt, i) => (
+              <button
+                key={i}
+                onClick={() => handleAnswer(opt, i)}
+                className={`answer-button ${shakeIndex === i ? 'shake' : ''} ${
+                  disabledOptions.includes(i) ? 'disabled' : ''
+                } ${
+                  selected && opt === selected && opt === questions[current].correct
+                    ? 'correct'
+                    : selected && opt === selected
+                    ? 'incorrect'
+                    : showCorrectAnswer && opt === questions[current].correct
+                    ? 'correct'
+                    : ''
+                }`}
+                disabled={disabledOptions.includes(i) || showCorrectAnswer}
+              >
+                {opt}
+              </button>
+            ))}
+          </div>
+
+          {showResult && (
+            <div className={`result ${isCorrect ? 'correct' : showCorrectAnswer ? 'incorrect' : 'incorrect'}`}>
+              <p>
+                {isCorrect 
+                  ? `✅ Correct! +${calculateScore()} points!` 
+                  : showCorrectAnswer 
+                    ? `❌ The correct answer was: ${questions[current].correct}`
+                    : '❌ Wrong!'}
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

@@ -1,3 +1,9 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
@@ -7,6 +13,9 @@ body {
   align-items: center;
   height: 100vh;
   position: relative;
+  background-image: url('http://s3.amazonaws.com/eyeworksgroupcdn/wp-content/uploads/2015/06/12043432/Silver-Blur-Background-Wallpaper.jpg');
+  background-size: cover;
+  overflow: hidden;
 }
 
 body::before {
@@ -20,39 +29,27 @@ body::before {
   z-index: 0;
 }
 
-.background-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url('./images/beatles_map.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  transition: background-position 3s ease-in-out;
-  z-index: -1;
+#wrap {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  overflow: hidden;
 }
 
 .quiz-container {
-  text-align: center;
-  width: 600px;
-  height: 600px;
-  margin: 0 auto;
-  padding: 2rem;
-  background: #171717;
-  border-radius: 50%;
-  box-shadow: 
-    0 0 20px rgba(0, 0, 0, 0.5),
-    inset 0 0 50px rgba(0, 0, 0, 0.7);
-  display: flex;
-  flex-direction: column;
   position: relative;
+  height: 50vw;
+  width: 50vw;
+  max-height: 75vh;
+  max-width: 75vh;
   z-index: 1;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: opacity 0.3s ease, visibility 0.3s ease;
   animation: bounceIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, visibility 0.3s ease;
+  background: transparent;
 }
 
 .quiz-container.hidden {
@@ -65,122 +62,173 @@ body::before {
   animation: bounceOut 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-.quiz-container.exit.question-transition {
-  animation: bounceOut 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+.vinyl {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-image: url('https://gallery.yopriceville.com/var/resizes/Free-Clipart-Pictures/Music-PNG/Gramophone_Vinyl_LP_Record_PNG_Transparent_Clip_Art_Image.png?m=1462983196');
+  background-size: 106% 106%;
+  background-position: center;
+  box-shadow: 0 0 20px 4px rgba(0,0,0,0.6);
+  border-radius: 50%;
+  animation: spinThat 5s linear infinite;
+  animation-play-state: paused;
+  mix-blend-mode: multiply;
 }
 
-.quiz-container::before {
-  content: '';
+.vinyl::before {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 2.5%;
+  left: 2.5%;
+  z-index: 10;
   width: 95%;
   height: 95%;
-  transform: translate(-50%, -50%);
+  background-image: url('http://www.designresourcebox.com/ths/diverse/blacktextures/82267467.jpg');
+  background-size: 100% 100%;
   border-radius: 50%;
-  background: repeating-radial-gradient(
-    circle at center,
-    #1a1a1a 0px,
-    #1a1a1a 1px,
-    #171717 1px,
-    #171717 3px
-  );
-  z-index: -1;
-  transition: transform 0.3s ease;
-  box-shadow: 
-    inset 0 0 50px rgba(0, 0, 0, 0.8),
-    0 0 20px rgba(0, 0, 0, 0.5);
-}
-
-.quiz-container.playing::before {
-  animation: spin 2s linear infinite;
-}
-
-.quiz-container::after {
+  mix-blend-mode: screen;
+  opacity: 0.3;
   content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 35%;
-  height: 35%;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: linear-gradient(45deg, #333, #444);
-  z-index: 1;
-  box-shadow: 
-    0 0 10px rgba(0, 0, 0, 0.5),
-    inset 0 0 20px rgba(0, 0, 0, 0.8);
-  border: 1px solid #444;
-  cursor: pointer;
-  transition: all 0.3s ease;
 }
 
-.quiz-container::after:hover {
-  transform: translate(-50%, -50%) scale(1.05);
-  box-shadow: 
-    0 0 15px rgba(0, 0, 0, 0.6),
-    inset 0 0 30px rgba(0, 0, 0, 0.9);
+.vinyl-label {
+  position: absolute;
+  top: 33%;
+  left: 33%;
+  height: 34%;
+  width: 34%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 40;
+  pointer-events: auto;
+  animation: counterSpin 5s linear infinite;
+  animation-play-state: paused;
 }
 
-.center-label {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 35%;
-  height: 35%;
-  transform: translate(-50%, -50%);
+.vinyl.playing .vinyl-label {
+  animation-play-state: running;
+}
+
+@keyframes counterSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.wood-circle {
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
-  background: linear-gradient(45deg, #333, #444);
-  z-index: 2;
-  box-shadow: 
-    0 0 10px rgba(0, 0, 0, 0.5),
-    inset 0 0 20px rgba(0, 0, 0, 0.8);
-  border: 1px solid #444;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  background: repeating-conic-gradient(
+    #4e2c14 0deg 10deg,
+    #3d1f0f 10deg 20deg
+  );
+  box-shadow:
+    inset 0 0 10px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(0, 0, 0, 0.9);
+  border: 8px solid #1c0e05;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  pointer-events: auto;
+}
+
+.metal-ring {
+  width: 75%;
+  height: 75%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, #aaa 0%, #444 100%);
+  box-shadow:
+    inset 2px 2px 4px rgba(255, 255, 255, 0.4),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.5);
+  padding: 10%;
   display: flex;
   justify-content: center;
   align-items: center;
+  pointer-events: auto;
 }
 
-.center-label.playing {
-  animation: vibrate 0.4s ease-in-out infinite;
+.vintage-button {
+  width: 97%;
+  height: 97%;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #c7c7c7, #7f7f7f);
+  border: 3px solid #222;
+  box-shadow:
+    inset -3px -3px 5px rgba(255, 255, 255, 0.3),
+    inset 3px 3px 5px rgba(0, 0, 0, 0.6),
+    0 4px 10px rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  user-select: none;
+  position: relative;
+  pointer-events: auto;
+  z-index: 41;
 }
 
-.center-label:hover {
-  transform: translate(-50%, -50%) scale(1.05);
-  box-shadow: 
-    0 0 15px rgba(0, 0, 0, 0.6),
-    inset 0 0 30px rgba(0, 0, 0, 0.9);
+.vintage-button.pressed {
+  transform: translateY(2px);
+  background: linear-gradient(145deg, #6c6c6c, #a8a8a8);
+  box-shadow:
+    inset 4px 4px 6px rgba(0, 0, 0, 0.5),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.2),
+    0 0 15px 4px #ff2a2a88;
 }
 
-.center-label.playing:hover {
-  animation: vibrate 0.4s ease-in-out infinite;
-  transform: translate(-50%, -50%) scale(1.05);
+@keyframes buttonPress {
+  0% {
+    transform: translateY(0);
+  }
+  10% {
+    transform: translateY(2px);
+  }
+  90% {
+    transform: translateY(2px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.play-icon, .stop-icon {
+  width: 0;
+  height: 0;
 }
 
 .play-icon {
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 15px 0 15px 25px;
-  border-color: transparent transparent transparent #fff;
+  border-top: 18px solid transparent;
+  border-bottom: 18px solid transparent;
+  border-left: 28px solid #222;
   margin-left: 5px;
-  transition: all 0.3s ease;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
-.center-label.playing .play-icon {
-  width: 20px;
-  height: 20px;
-  border: none;
-  background: #fff;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-  margin-left: 0;
+.stop-icon {
+  width: 26px;
+  height: 26px;
+  background: #222;
 }
 
-.center-label.playing:hover .play-icon {
-  transform: scale(1.1);
+.vinyl.playing {
+  animation-play-state: running;
+}
+
+@keyframes spinThat {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Update content positioning */
@@ -199,10 +247,17 @@ h1 {
 }
 
 .options {
-  position: relative;
-  z-index: 3;
-  margin-top: auto;
-  margin-bottom: 80px;
+  position: absolute;
+  top: calc(50% + 150px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  z-index: 30;
+  justify-content: center;
+  align-items: center;
 }
 
 .footer {
@@ -218,41 +273,62 @@ h1 {
   z-index: 3;
 }
 
-.play-button {
-  display: none;
-}
-
 .answer-button {
-  background: #22242c;
-  color: white;
-  border: 2px solid #444;
+  flex: 1;
+  min-width: 0;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(20, 20, 30, 0.9));
+  color: #FFD700;
+  border: 2px solid rgba(255, 215, 0, 0.3);
   border-radius: 8px;
-  padding: 0.75rem 1.25rem;
-  font-size: 1rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.3),
+    inset 0 0 20px rgba(255, 255, 255, 0.1),
+    0 0 30px rgba(255, 215, 0, 0.2);
 }
 
 .answer-button:hover:not(:disabled) {
-  background: #333640;
+  background: linear-gradient(135deg, rgba(20, 20, 30, 0.95), rgba(0, 0, 0, 0.95));
   transform: translateY(-2px);
+  border-color: rgba(255, 215, 0, 0.5);
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.3),
+    inset 0 0 20px rgba(255, 255, 255, 0.1),
+    0 0 30px rgba(255, 215, 0, 0.4);
 }
 
 .answer-button.correct {
-  background: #22c55e;
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.9), rgba(22, 163, 74, 0.9));
   border-color: #22c55e;
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.3),
+    inset 0 0 20px rgba(255, 255, 255, 0.1),
+    0 0 30px rgba(34, 197, 94, 0.4);
 }
 
 .answer-button.incorrect {
-  background: #ef4444;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.9), rgba(220, 38, 38, 0.9));
   border-color: #ef4444;
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.3),
+    inset 0 0 20px rgba(255, 255, 255, 0.1),
+    0 0 30px rgba(239, 68, 68, 0.4);
 }
 
 .answer-button.disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  background: #333;
-  border-color: #444;
+  background: rgba(51, 51, 51, 0.9);
+  border-color: rgba(68, 68, 68, 0.5);
   transform: none;
 }
 
@@ -820,4 +896,41 @@ h1 {
   background: rgba(255, 215, 0, 0.1);
   border-radius: 5px;
   border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('./images/beatles_map.png');
+  background-size: cover;
+  background-position: 50% 50%;
+  z-index: 0;
+  transition: background-position 1.5s ease;
+}
+
+@keyframes buttonFloat {
+  0% {
+    transform: translateY(0);
+    box-shadow: 
+      0 4px 15px rgba(0, 0, 0, 0.3),
+      inset 0 0 20px rgba(255, 255, 255, 0.1),
+      0 0 30px rgba(255, 215, 0, 0.2);
+  }
+  50% {
+    transform: translateY(-3px);
+    box-shadow: 
+      0 8px 25px rgba(0, 0, 0, 0.4),
+      inset 0 0 20px rgba(255, 255, 255, 0.1),
+      0 0 40px rgba(255, 215, 0, 0.3);
+  }
+  100% {
+    transform: translateY(0);
+    box-shadow: 
+      0 4px 15px rgba(0, 0, 0, 0.3),
+      inset 0 0 20px rgba(255, 255, 255, 0.1),
+      0 0 30px rgba(255, 215, 0, 0.2);
+  }
 }
