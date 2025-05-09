@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Vinyl Record Display</title>
+	<link rel="stylesheet" href="App.css">
+</head>
+<body>
+	<div id="wrap">
+		<div id="album">
+			<div id="vinyl">
+				<div id="print">
+				</div>
+			</div>
+			<button id="playButton" class="play-button">
+				<span class="play-icon">▶</span>
+			</button>
+		</div>
+	</div>
+	<script>
+		const vinyl = document.getElementById('vinyl');
+		const playButton = document.getElementById('playButton');
+		const playIcon = playButton.querySelector('.play-icon');
+		let isPlaying = false;
+
+		playButton.addEventListener('click', () => {
+			isPlaying = !isPlaying;
+			if (isPlaying) {
+				vinyl.style.animationPlayState = 'running';
+				playIcon.textContent = '⏸';
+			} else {
+				vinyl.style.animationPlayState = 'paused';
+				playIcon.textContent = '▶';
+			}
+		});
+	</script>
+</body>
+</html>

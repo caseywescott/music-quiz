@@ -1,0 +1,101 @@
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body {
+	height: 100%;
+	background-image: url('http://s3.amazonaws.com/eyeworksgroupcdn/wp-content/uploads/2015/06/12043432/Silver-Blur-Background-Wallpaper.jpg');
+	background-size: cover;
+	overflow: hidden;
+}
+#wrap {
+	background-color: rgba(0,0,0,0.8);
+	height: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+#album {
+	position: relative;
+	height: 50vw;
+	width: 50vw;
+	max-height: 75vh;
+	max-width: 75vh;
+}
+#vinyl {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: block;
+	background-image: url('https://gallery.yopriceville.com/var/resizes/Free-Clipart-Pictures/Music-PNG/Gramophone_Vinyl_LP_Record_PNG_Transparent_Clip_Art_Image.png?m=1462983196');
+	background-size: 106% 106%;
+	background-position: center;
+	box-shadow: 0 0 20px 4px rgba(0,0,0,0.6);
+	border-radius: 50%;
+	animation: spinThat 5s linear infinite;
+	animation-play-state: paused;
+}
+#vinyl::before {
+	position: absolute;
+	top: 2.5%;
+	left: 2.5%;
+	z-index: 10;
+	width: 95%;
+	height: 95%;
+	background-image: url('http://www.designresourcebox.com/ths/diverse/blacktextures/82267467.jpg');
+	background-size: 100% 100%;
+	border-radius: 50%;
+	mix-blend-mode: screen;
+	opacity: 0.3;
+	content: '';
+}
+#print {
+	position: absolute;
+	top: 33%;
+	left: 33%;
+	height: 34%;
+	width: 34%;
+	box-shadow: inset 0 0 0 5px rgba(150,150,150,0.5);
+	background-color: #e31837; /* Apple Records red color */
+	background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Apple_Records_logo.svg/1200px-Apple_Records_logo.svg.png');
+	background-size: 70% 70%;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: 50%;
+}
+
+.play-button {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 20;
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.9);
+	border: none;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	transition: all 0.3s ease;
+}
+
+.play-button:hover {
+	background: white;
+	transform: translate(-50%, -50%) scale(1.1);
+}
+
+.play-icon {
+	font-size: 24px;
+	color: #333;
+}
+
+@keyframes spinThat {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}

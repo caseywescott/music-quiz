@@ -1,0 +1,33 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.paul-sprite {
+    width: 128px;  /* 4x larger than original */
+    height: 128px; /* 4x larger than original */
+    background-image: url('ChatGPT Image May 9, 2025, 09_56_38 PM.png');
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+    background-size: 384px 512px; /* 3 columns * 128px width, 4 rows * 128px height */
+    animation: walkPaul 1.2s steps(12) infinite;
+}
+
+@keyframes walkPaul {
+    0% { background-position: 0px 0px; }
+    8.33% { background-position: -128px 0px; }
+    16.66% { background-position: -256px 0px; }
+    25% { background-position: 0px -128px; }
+    33.33% { background-position: -128px -128px; }
+    41.66% { background-position: -256px -128px; }
+    50% { background-position: 0px -256px; }
+    58.33% { background-position: -128px -256px; }
+    66.66% { background-position: -256px -256px; }
+    75% { background-position: 0px -384px; }
+    83.33% { background-position: -128px -384px; }
+    91.66% { background-position: -256px -384px; }
+    100% { background-position: 0px 0px; }
+}
