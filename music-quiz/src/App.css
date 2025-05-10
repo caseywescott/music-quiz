@@ -67,6 +67,7 @@ body::before {
   width: 100%;
   height: 100%;
   display: block;
+  background-color: #000;
   background-image: url('https://gallery.yopriceville.com/var/resizes/Free-Clipart-Pictures/Music-PNG/Gramophone_Vinyl_LP_Record_PNG_Transparent_Clip_Art_Image.png?m=1462983196');
   background-size: 106% 106%;
   background-position: center;
@@ -74,7 +75,6 @@ body::before {
   border-radius: 50%;
   animation: spinThat 5s linear infinite;
   animation-play-state: paused;
-  mix-blend-mode: multiply;
 }
 
 .vinyl::before {
@@ -248,16 +248,18 @@ h1 {
 
 .options {
   position: absolute;
-  top: calc(50% + 150px);
+  top: calc(50% + 250px);
   left: 50%;
   transform: translate(-50%, -50%);
   width: 90%;
+  max-width: 1000px;
   display: flex;
   flex-direction: row;
-  gap: 8px;
+  gap: 12px;
   z-index: 30;
   justify-content: center;
   align-items: center;
+  padding: 0 20px;
 }
 
 .footer {
@@ -274,62 +276,134 @@ h1 {
 }
 
 .answer-button {
-  flex: 1;
-  min-width: 0;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(20, 20, 30, 0.9));
-  color: #FFD700;
-  border: 2px solid rgba(255, 215, 0, 0.3);
-  border-radius: 8px;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.9rem;
+  position: relative;
+  width: 25%;
+  min-width: 250px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(5px);
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-  text-align: center;
-  white-space: nowrap;
+  border: none;
+  background: none;
+  padding: 0;
+  outline: none;
+  transition: transform 0.2s, filter 0.2s;
+}
+
+.answer-button:hover {
+  transform: scale(1.02);
+  filter: brightness(1.05);
+}
+
+.answer-button:active {
+  transform: scale(0.98);
+  filter: brightness(0.95);
+}
+
+.frame-with-shadow {
+  position: relative;
+  width: 100%;
+  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.35));
+}
+
+.wooden-frame {
+  position: relative;
+  padding: 12px 15px;
+  border-radius: 8px;
+  z-index: 2;
+  background: linear-gradient(145deg, #6d3e1c, #7d4923 20%, #8e5b30 40%, #a56b38 60%, #b27c45 80%, #9e6b3a);
+  box-shadow: 
+    inset 0 5px 10px rgba(255,255,255,0.2),
+    inset 0 -5px 10px rgba(0,0,0,0.5);
+  border: 1px solid #4a2b11;
   overflow: hidden;
-  text-overflow: ellipsis;
-  box-shadow: 
-    0 4px 15px rgba(0, 0, 0, 0.3),
-    inset 0 0 20px rgba(255, 255, 255, 0.1),
-    0 0 30px rgba(255, 215, 0, 0.2);
 }
 
-.answer-button:hover:not(:disabled) {
-  background: linear-gradient(135deg, rgba(20, 20, 30, 0.95), rgba(0, 0, 0, 0.95));
-  transform: translateY(-2px);
-  border-color: rgba(255, 215, 0, 0.5);
-  box-shadow: 
-    0 4px 15px rgba(0, 0, 0, 0.3),
-    inset 0 0 20px rgba(255, 255, 255, 0.1),
-    0 0 30px rgba(255, 215, 0, 0.4);
+.woodgrain-base {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.9;
+  background-image: 
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(110, 70, 30, 0.1) 2px,
+      rgba(110, 70, 30, 0.1) 3px,
+      transparent 3px,
+      transparent 5px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      transparent,
+      transparent 1px,
+      rgba(90, 50, 20, 0.05) 1px,
+      rgba(90, 50, 20, 0.05) 2px,
+      transparent 2px,
+      transparent 8px
+    );
+  pointer-events: none;
 }
 
-.answer-button.correct {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.9), rgba(22, 163, 74, 0.9));
-  border-color: #22c55e;
+.inner-frame {
+  position: relative;
+  background: linear-gradient(145deg, #7a4a22 10%, #8e5b30 30%, #a26b3c 70%, #b47a45 90%);
+  border-radius: 4px;
+  padding: 10px;
   box-shadow: 
-    0 4px 15px rgba(0, 0, 0, 0.3),
-    inset 0 0 20px rgba(255, 255, 255, 0.1),
-    0 0 30px rgba(34, 197, 94, 0.4);
+    inset 0 0 10px rgba(0,0,0,0.6),
+    inset 0 0 20px rgba(0,0,0,0.3);
+  border: 1px solid #5a3a1c;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.answer-button.incorrect {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.9), rgba(220, 38, 38, 0.9));
-  border-color: #ef4444;
+.text-display {
+  position: relative;
+  width: 90%;
+  background-color: #eee2d0;
+  border: 1px solid #9c7a52;
+  border-radius: 3px;
+  padding: 6px 10px;
+  font-family: 'Palatino Linotype', 'Book Antiqua', 'Baskerville', serif;
+  font-size: 20px;
+  line-height: 1.2;
+  color: #000000;
+  text-align: center;
   box-shadow: 
-    0 4px 15px rgba(0, 0, 0, 0.3),
-    inset 0 0 20px rgba(255, 255, 255, 0.1),
-    0 0 30px rgba(239, 68, 68, 0.4);
+    inset 0 2px 5px rgba(0,0,0,0.3),
+    0 1px 2px rgba(255,255,255,0.3);
+  z-index: 2;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(150, 120, 80, 0.03) 3px,
+      rgba(150, 120, 80, 0.03) 4px
+    );
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 1px rgba(255,255,255,0.5);
+}
+
+.answer-button.correct .text-display {
+  background-color: #e8f5e9;
+  border-color: #81c784;
+  color: #2e7d32;
+}
+
+.answer-button.incorrect .text-display {
+  background-color: #ffebee;
+  border-color: #e57373;
+  color: #c62828;
 }
 
 .answer-button.disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  background: rgba(51, 51, 51, 0.9);
-  border-color: rgba(68, 68, 68, 0.5);
-  transform: none;
+  pointer-events: none;
 }
 
 .result {
@@ -402,12 +476,16 @@ h1 {
 }
 
 @keyframes shake {
-  0% { transform: translateX(0); }
-  20% { transform: translateX(-10px); }
-  40% { transform: translateX(10px); }
-  60% { transform: translateX(-10px); }
-  80% { transform: translateX(10px); }
-  100% { transform: translateX(0); }
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.answer-button.selected.incorrect {
+  animation: shake 1s cubic-bezier(.36,.07,.19,.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 @keyframes popIn {

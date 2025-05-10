@@ -56,7 +56,29 @@ function App() {
     setIsPlaying(true);
     const audio = new Audio(questions[current].audio);
     audio.volume = volume;
-    audio.play();
+    
+    // Add error handling
+    audio.onerror = (e) => {
+      console.error('Error playing audio:', e);
+      setIsPlaying(false);
+    };
+    
+    // Add success handling
+    audio.onplay = () => {
+      console.log('Audio started playing');
+    };
+    
+    // Add ended handling
+    audio.onended = () => {
+      console.log('Audio finished playing');
+      setIsPlaying(false);
+    };
+    
+    // Play the audio
+    audio.play().catch(error => {
+      console.error('Error playing audio:', error);
+      setIsPlaying(false);
+    });
     
     // Update play count for current clip
     setPlayCounts(prev => ({
@@ -73,7 +95,9 @@ function App() {
   };
 
   const playVictorySound = () => {
-    new Audio('/RockitMan.mp3').play();
+    const victorySound = new Audio('/RockitMan.mp3');
+    victorySound.volume = volume;
+    victorySound.play();
   };
 
   const calculateScore = () => {
@@ -93,6 +117,11 @@ function App() {
       setAttemptCount(0);
       setShowCorrectAnswer(false);
       setQuestionKey(prev => prev + 1);
+      // Reset play count for the new question
+      setPlayCounts(prev => ({
+        ...prev,
+        [current]: 0
+      }));
     }, 800);
   };
 
@@ -228,21 +257,18 @@ function App() {
             {questions[current].options.map((opt, i) => (
               <button
                 key={i}
+                className={`answer-button ${selected === opt ? 'selected' : ''} ${showResult ? (opt === questions[current].correct ? 'correct' : 'incorrect') : ''} ${disabledOptions.includes(i) ? 'disabled' : ''}`}
                 onClick={() => handleAnswer(opt, i)}
-                className={`answer-button ${shakeIndex === i ? 'shake' : ''} ${
-                  disabledOptions.includes(i) ? 'disabled' : ''
-                } ${
-                  selected && opt === selected && opt === questions[current].correct
-                    ? 'correct'
-                    : selected && opt === selected
-                    ? 'incorrect'
-                    : showCorrectAnswer && opt === questions[current].correct
-                    ? 'correct'
-                    : ''
-                }`}
                 disabled={disabledOptions.includes(i) || showCorrectAnswer}
               >
-                {opt}
+                <div className="frame-with-shadow">
+                  <div className="wooden-frame">
+                    <div className="woodgrain-base"></div>
+                    <div className="inner-frame">
+                      <div className="text-display">{opt}</div>
+                    </div>
+                  </div>
+                </div>
               </button>
             ))}
           </div>
