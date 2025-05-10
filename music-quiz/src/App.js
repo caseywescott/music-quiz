@@ -169,23 +169,13 @@ function App() {
         setButtonStates(prev => ({
           ...prev,
           [index]: {
-            selected: true,
-            isCorrect: false
+            selected: false,
+            isCorrect: false,
+            exploded: true
           }
         }));
         setShowResult(false);
       }, 500);
-
-      // Set exploded state after animation completes
-      setTimeout(() => {
-        setButtonStates(prev => ({
-          ...prev,
-          [index]: {
-            ...prev[index],
-            exploded: true
-          }
-        }));
-      }, 3200); // Wait for all animations to complete
 
       // Check if we should move to next question after all attempts
       if (attemptCount + 1 >= 3) {
