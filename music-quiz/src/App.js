@@ -45,6 +45,7 @@ function App() {
   const [bgPosition, setBgPosition] = useState({ x: 50, y: 50 });
   const [playCounts, setPlayCounts] = useState({});
   const [questionKey, setQuestionKey] = useState(0);
+  const [buttonStates, setButtonStates] = useState({});
 
   const toggleLeaderboard = () => {
     setShowLeaderboard(!showLeaderboard);
@@ -113,11 +114,10 @@ function App() {
       setSelected(null);
       setIsCorrect(false);
       setIsExiting(false);
-      setDisabledOptions([]);
       setAttemptCount(0);
       setShowCorrectAnswer(false);
       setQuestionKey(prev => prev + 1);
-      // Reset play count for the new question
+      setButtonStates({}); // Reset all button states
       setPlayCounts(prev => ({
         ...prev,
         [current]: 0
@@ -133,15 +133,20 @@ function App() {
   };
 
   const handleAnswer = (answer, index) => {
+    // Update only the clicked button's state
+    setButtonStates(prev => ({
+      ...prev,
+      [index]: {
+        selected: true,
+        isCorrect: answer === questions[current].correct
+      }
+    }));
+
     setSelected(answer);
     const isCorrectAnswer = answer === questions[current].correct;
     setIsCorrect(isCorrectAnswer);
     
     if (isCorrectAnswer) {
-      // Disable all other options immediately
-      const allIndices = questions[current].options.map((_, i) => i);
-      setDisabledOptions(allIndices.filter(i => i !== index));
-      
       setShowResult(true);
       setShowConfetti(true);
       const points = calculateScore();
@@ -156,22 +161,38 @@ function App() {
         setJohnPosition(prev => prev + 100);
       }, 1000);
     } else {
-      setDisabledOptions(prev => [...prev, index]);
-      setShakeIndex(index);
       setAttemptCount(prev => prev + 1);
+      setShowResult(true);
       
+      // Handle wrong answer UI independently
+      setTimeout(() => {
+        setButtonStates(prev => ({
+          ...prev,
+          [index]: {
+            selected: true,
+            isCorrect: false
+          }
+        }));
+        setShowResult(false);
+      }, 500);
+
+      // Set exploded state after animation completes
+      setTimeout(() => {
+        setButtonStates(prev => ({
+          ...prev,
+          [index]: {
+            ...prev[index],
+            exploded: true
+          }
+        }));
+      }, 3200); // Wait for all animations to complete
+
+      // Check if we should move to next question after all attempts
       if (attemptCount + 1 >= 3) {
         setShowCorrectAnswer(true);
-        setShowResult(true);
         setTimeout(() => {
           moveToNextQuestion();
         }, 1500);
-      } else {
-        setShowResult(true);
-        setTimeout(() => {
-          setShakeIndex(null);
-          setShowResult(false);
-        }, 500);
       }
     }
   };
@@ -257,9 +278,17 @@ function App() {
             {questions[current].options.map((opt, i) => (
               <button
                 key={i}
-                className={`answer-button ${selected === opt ? 'selected' : ''} ${showResult ? (opt === questions[current].correct ? 'correct' : 'incorrect') : ''} ${disabledOptions.includes(i) ? 'disabled' : ''}`}
+                className={`answer-button ${
+                  buttonStates[i]?.selected ? 'selected' : ''
+                } ${
+                  buttonStates[i]?.selected && buttonStates[i]?.isCorrect ? 'correct' : ''
+                } ${
+                  buttonStates[i]?.selected && !buttonStates[i]?.isCorrect ? 'incorrect' : ''
+                } ${
+                  buttonStates[i]?.exploded ? 'exploded' : ''
+                }`}
                 onClick={() => handleAnswer(opt, i)}
-                disabled={disabledOptions.includes(i) || showCorrectAnswer}
+                disabled={showCorrectAnswer || buttonStates[i]?.exploded}
               >
                 <div className="frame-with-shadow">
                   <div className="wooden-frame">

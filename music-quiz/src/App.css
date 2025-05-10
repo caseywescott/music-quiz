@@ -297,6 +297,35 @@ h1 {
   filter: brightness(0.95);
 }
 
+.answer-button.disabled,
+.answer-button.exploded {
+  pointer-events: none;
+}
+
+.answer-button.exploded {
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.answer-button.selected.correct .text-display {
+  background-color: #e8f5e9;
+  border-color: #81c784;
+  color: #000000;
+}
+
+.answer-button.selected.incorrect .text-display {
+  background-color: #ffebee;
+  border-color: #e57373;
+  color: #000000;
+}
+
+.answer-button:not(.selected) .text-display {
+  background-color: #eee2d0;
+  border-color: #9c7a52;
+  color: #000000;
+}
+
 .frame-with-shadow {
   position: relative;
   width: 100%;
@@ -388,24 +417,6 @@ h1 {
   text-shadow: 1px 1px 1px rgba(255,255,255,0.5);
 }
 
-.answer-button.correct .text-display {
-  background-color: #e8f5e9;
-  border-color: #81c784;
-  color: #2e7d32;
-}
-
-.answer-button.incorrect .text-display {
-  background-color: #ffebee;
-  border-color: #e57373;
-  color: #c62828;
-}
-
-.answer-button.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
 .result {
   position: fixed;
   top: 50%;
@@ -477,15 +488,165 @@ h1 {
 
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
-  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-  20%, 40%, 60%, 80% { transform: translateX(5px); }
+  10% { transform: translateX(-3px); }
+  20% { transform: translateX(3px); }
+  30% { transform: translateX(-2px); }
+  40% { transform: translateX(2px); }
+  50% { transform: translateX(-1px); }
+  60% { transform: translateX(1px); }
+  70% { transform: translateX(-0.5px); }
+  80% { transform: translateX(0.5px); }
+  90% { transform: translateX(-0.25px); }
+}
+
+@keyframes explode {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+    filter: brightness(1);
+  }
+  20% {
+    transform: scale(1.4);
+    opacity: 0.95;
+    filter: brightness(1.5);
+  }
+  40% {
+    transform: scale(0.8) rotate(10deg);
+    opacity: 0.9;
+    filter: brightness(2);
+  }
+  60% {
+    transform: scale(1.2) rotate(-15deg);
+    opacity: 0.7;
+    filter: brightness(2.5);
+  }
+  80% {
+    transform: scale(0.4) rotate(20deg);
+    opacity: 0.4;
+    filter: brightness(3);
+  }
+  100% {
+    transform: scale(0) rotate(45deg);
+    opacity: 0;
+    filter: brightness(4);
+  }
+}
+
+@keyframes particle {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(0);
+    opacity: 0;
+  }
 }
 
 .answer-button.selected.incorrect {
-  animation: shake 1s cubic-bezier(.36,.07,.19,.97) both;
+  animation: shake 1.2s cubic-bezier(0.4, 0, 0.2, 1) both;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   perspective: 1000px;
+  position: relative;
+  pointer-events: none;
+}
+
+.answer-button.selected.incorrect .frame-with-shadow {
+  animation: shake 1.2s cubic-bezier(0.4, 0, 0.2, 1) both,
+             explode 2s cubic-bezier(0.4, 0, 0.2, 1) 1.2s forwards;
+  transform-origin: center;
+  will-change: transform, opacity, filter;
+}
+
+.answer-button.selected.incorrect .wooden-frame {
+  animation: shake 1.2s cubic-bezier(0.4, 0, 0.2, 1) both,
+             explode 2s cubic-bezier(0.4, 0, 0.2, 1) 1.2s forwards;
+  transform-origin: center;
+  will-change: transform, opacity, filter;
+}
+
+.answer-button.selected.incorrect .inner-frame {
+  animation: shake 1.2s cubic-bezier(0.4, 0, 0.2, 1) both,
+             explode 2s cubic-bezier(0.4, 0, 0.2, 1) 1.2s forwards;
+  transform-origin: center;
+  will-change: transform, opacity, filter;
+}
+
+.answer-button.selected.incorrect .text-display {
+  animation: shake 1.2s cubic-bezier(0.4, 0, 0.2, 1) both,
+             explode 2s cubic-bezier(0.4, 0, 0.2, 1) 1.2s forwards;
+  transform-origin: center;
+  will-change: transform, opacity, filter;
+}
+
+.answer-button.selected.incorrect::before,
+.answer-button.selected.incorrect::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  background: #FFD700;
+  border-radius: 50%;
+  animation: particle 1.5s ease-out forwards;
+  opacity: 0;
+  animation-delay: 1.2s;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.answer-button.selected.incorrect .frame-with-shadow::before,
+.answer-button.selected.incorrect .frame-with-shadow::after,
+.answer-button.selected.incorrect .wooden-frame::before,
+.answer-button.selected.incorrect .wooden-frame::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3px;
+  height: 3px;
+  background: #FFD700;
+  border-radius: 50%;
+  animation: particle 1.5s ease-out forwards;
+  opacity: 0;
+  animation-delay: 1.2s;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.answer-button.selected.incorrect::before {
+  --tx: -30px;
+  --ty: -30px;
+}
+
+.answer-button.selected.incorrect::after {
+  --tx: 30px;
+  --ty: 30px;
+}
+
+.answer-button.selected.incorrect .frame-with-shadow::before {
+  --tx: -20px;
+  --ty: -20px;
+}
+
+.answer-button.selected.incorrect .frame-with-shadow::after {
+  --tx: 20px;
+  --ty: 20px;
+}
+
+.answer-button.selected.incorrect .wooden-frame::before {
+  --tx: -25px;
+  --ty: 25px;
+}
+
+.answer-button.selected.incorrect .wooden-frame::after {
+  --tx: 25px;
+  --ty: -25px;
 }
 
 @keyframes popIn {
@@ -1011,4 +1172,29 @@ h1 {
       inset 0 0 20px rgba(255, 255, 255, 0.1),
       0 0 30px rgba(255, 215, 0, 0.2);
   }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-8px); }
+  50% { transform: translateY(0); }
+  75% { transform: translateY(-4px); }
+}
+
+.answer-button.selected.correct {
+  animation: bounce 1.5s ease-in-out infinite;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+@keyframes flash {
+  0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+  20% { box-shadow: 0 0 80px 20px rgba(255, 215, 0, 0.8); }
+  50% { box-shadow: 0 0 50px 15px rgba(255, 215, 0, 0.6); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+}
+
+.answer-button.selected.correct .frame-with-shadow {
+  animation: flash 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
