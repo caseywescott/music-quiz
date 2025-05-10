@@ -304,8 +304,9 @@ h1 {
 
 .answer-button.exploded {
   opacity: 0;
-  transform: scale(0);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  filter: blur(4px);
+  pointer-events: none;
+  transition: opacity 0.8s ease-out, filter 0.8s ease-out;
 }
 
 .answer-button.selected.correct .text-display {
@@ -488,34 +489,37 @@ h1 {
 
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
-  10% { transform: translateX(-8px); }
-  20% { transform: translateX(8px); }
-  30% { transform: translateX(-6px); }
-  40% { transform: translateX(6px); }
-  50% { transform: translateX(-4px); }
-  60% { transform: translateX(4px); }
-  70% { transform: translateX(-2px); }
-  80% { transform: translateX(2px); }
-  90% { transform: translateX(-1px); }
+  10% { transform: translateX(-3px); }
+  20% { transform: translateX(3px); }
+  30% { transform: translateX(-2px); }
+  40% { transform: translateX(2px); }
+  50% { transform: translateX(-1px); }
+  60% { transform: translateX(1px); }
+  70% { transform: translateX(-1px); }
+  80% { transform: translateX(1px); }
+  90% { transform: translateX(-0.5px); }
 }
 
-@keyframes explode {
+@keyframes dissolve {
   0% {
-    transform: scale(1);
     opacity: 1;
+    filter: blur(0);
+    visibility: visible;
   }
-  50% {
-    transform: scale(1.2);
-    opacity: 0.8;
+  99% {
+    opacity: 0;
+    filter: blur(4px);
+    visibility: visible;
   }
   100% {
-    transform: scale(0);
     opacity: 0;
+    filter: blur(4px);
+    visibility: hidden;
   }
 }
 
 .answer-button.selected.incorrect {
-  animation: shake 1s cubic-bezier(.36,.07,.19,.97) both;
+  animation: shake 1.2s cubic-bezier(.36,.07,.19,.97) both;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   perspective: 1000px;
@@ -525,8 +529,8 @@ h1 {
 .answer-button.selected.incorrect .wooden-frame,
 .answer-button.selected.incorrect .inner-frame,
 .answer-button.selected.incorrect .text-display {
-  animation: shake 1s cubic-bezier(.36,.07,.19,.97) both,
-             explode 0.5s cubic-bezier(0.4, 0, 0.2, 1) 1s forwards;
+  animation: shake 1.2s cubic-bezier(.36,.07,.19,.97) both,
+             dissolve 0.8s ease-out 1.2s forwards;
 }
 
 @keyframes popIn {
@@ -1077,4 +1081,34 @@ h1 {
 
 .answer-button.selected.correct .frame-with-shadow {
   animation: flash 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes dissolveNonSelected {
+  0% {
+    opacity: 1;
+    filter: blur(0);
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    filter: blur(4px);
+    visibility: hidden;
+  }
+}
+
+.answer-button:not(.selected) {
+  transition: opacity 0.8s ease-out, filter 0.8s ease-out;
+}
+
+/* Target all non-selected buttons when any button is selected as correct */
+.options:has(.answer-button.selected.correct) .answer-button:not(.selected) {
+  animation: dissolveNonSelected 0.8s ease-out forwards;
+  pointer-events: none;
+}
+
+/* Ensure dissolved buttons stay dissolved */
+.answer-button.dissolved {
+  opacity: 0;
+  filter: blur(4px);
+  pointer-events: none;
 }

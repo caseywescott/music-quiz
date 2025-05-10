@@ -117,7 +117,8 @@ function App() {
       setAttemptCount(0);
       setShowCorrectAnswer(false);
       setQuestionKey(prev => prev + 1);
-      setButtonStates({}); // Reset all button states
+      // Reset all button states
+      setButtonStates({});
       setPlayCounts(prev => ({
         ...prev,
         [current]: 0
@@ -147,6 +148,22 @@ function App() {
     setIsCorrect(isCorrectAnswer);
     
     if (isCorrectAnswer) {
+      // Add dissolved class to all non-selected buttons
+      setButtonStates(prev => {
+        const newState = { ...prev };
+        questions[current].options.forEach((_, i) => {
+          if (i !== index) {
+            newState[i] = {
+              ...newState[i],
+              dissolved: true,
+              selected: false,
+              isCorrect: false
+            };
+          }
+        });
+        return newState;
+      });
+
       setShowResult(true);
       setShowConfetti(true);
       const points = calculateScore();
@@ -180,6 +197,21 @@ function App() {
       // Check if we should move to next question after all attempts
       if (attemptCount + 1 >= 3) {
         setShowCorrectAnswer(true);
+        // Mark all buttons as dissolved except the correct one
+        setButtonStates(prev => {
+          const newState = { ...prev };
+          questions[current].options.forEach((opt, i) => {
+            if (opt !== questions[current].correct) {
+              newState[i] = {
+                ...newState[i],
+                dissolved: true,
+                selected: false,
+                isCorrect: false
+              };
+            }
+          });
+          return newState;
+        });
         setTimeout(() => {
           moveToNextQuestion();
         }, 1500);
@@ -276,6 +308,8 @@ function App() {
                   buttonStates[i]?.selected && !buttonStates[i]?.isCorrect ? 'incorrect' : ''
                 } ${
                   buttonStates[i]?.exploded ? 'exploded' : ''
+                } ${
+                  buttonStates[i]?.dissolved ? 'dissolved' : ''
                 }`}
                 onClick={() => handleAnswer(opt, i)}
                 disabled={showCorrectAnswer || buttonStates[i]?.exploded}
