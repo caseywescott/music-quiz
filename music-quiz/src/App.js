@@ -108,6 +108,24 @@ function App() {
 
   const moveToNextQuestion = () => {
     setIsExiting(true);
+    // First, ensure all non-correct buttons stay dissolved
+    setButtonStates(prev => {
+      const newState = { ...prev };
+      questions[current].options.forEach((opt, i) => {
+        if (opt !== questions[current].correct) {
+          newState[i] = {
+            ...newState[i],
+            dissolved: true,
+            selected: false,
+            isCorrect: false,
+            exploded: prev[i]?.exploded || false
+          };
+        }
+      });
+      return newState;
+    });
+
+    // Wait for exit animation to complete before resetting states
     setTimeout(() => {
       setCurrent((prev) => (prev + 1) % questions.length);
       setShowResult(false);
@@ -117,8 +135,10 @@ function App() {
       setAttemptCount(0);
       setShowCorrectAnswer(false);
       setQuestionKey(prev => prev + 1);
-      // Reset all button states
-      setButtonStates({});
+      // Only reset button states after the exit animation
+      setTimeout(() => {
+        setButtonStates({});
+      }, 100);
       setPlayCounts(prev => ({
         ...prev,
         [current]: 0
@@ -148,7 +168,7 @@ function App() {
     setIsCorrect(isCorrectAnswer);
     
     if (isCorrectAnswer) {
-      // Add dissolved class to all non-selected buttons
+      // Add dissolved class to all non-selected buttons while preserving exploded state
       setButtonStates(prev => {
         const newState = { ...prev };
         questions[current].options.forEach((_, i) => {
@@ -157,7 +177,9 @@ function App() {
               ...newState[i],
               dissolved: true,
               selected: false,
-              isCorrect: false
+              isCorrect: false,
+              // Preserve the exploded state if it exists
+              exploded: prev[i]?.exploded || false
             };
           }
         });
@@ -171,18 +193,22 @@ function App() {
       playVictorySound();
       setIsJohnAnimating(true);
       setBgPosition(getRandomPosition());
+      
+      // Wait for dissolve animation to complete (0.6s) before moving to next question
       setTimeout(() => {
         setShowConfetti(false);
         moveToNextQuestion();
         setIsJohnAnimating(false);
         setJohnPosition(prev => prev + 100);
-      }, 1000);
+      }, 1000); // Reduced from 2000ms to 1000ms to account for faster dissolve
     } else {
       setAttemptCount(prev => prev + 1);
       setShowResult(true);
       
-      // Handle wrong answer UI independently
+      // First do the shake animation
       setTimeout(() => {
+        setShowResult(false);
+        // After shake completes, mark as exploded to start dissolve
         setButtonStates(prev => ({
           ...prev,
           [index]: {
@@ -191,8 +217,7 @@ function App() {
             exploded: true
           }
         }));
-        setShowResult(false);
-      }, 500);
+      }, 600); // Reduced from 1200ms to 600ms to match faster shake
 
       // Check if we should move to next question after all attempts
       if (attemptCount + 1 >= 3) {
@@ -206,15 +231,18 @@ function App() {
                 ...newState[i],
                 dissolved: true,
                 selected: false,
-                isCorrect: false
+                isCorrect: false,
+                // Preserve the exploded state if it exists
+                exploded: prev[i]?.exploded || false
               };
             }
           });
           return newState;
         });
+        // Wait for dissolve animation to complete before moving to next question
         setTimeout(() => {
           moveToNextQuestion();
-        }, 1500);
+        }, 1000); // Reduced from 2000ms to 1000ms to account for faster dissolve
       }
     }
   };

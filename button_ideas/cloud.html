@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Explosion/Cloud Puff Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #222;
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 800px;
+            text-align: center;
+        }
+        
+        h1 {
+            margin-bottom: 40px;
+        }
+        
+        .button-container {
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        button {
+            padding: 12px 24px;
+            font-size: 18px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, background 0.2s;
+        }
+        
+        button:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+        
+        .explosion-area {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Base explosion container */
+        .explosion {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            transform: scale(0);
+            transform-origin: center center;
+            pointer-events: none;
+        }
+        
+        /* Animation classes that will be toggled by JavaScript */
+        .explosion.animate {
+            animation: explode 1.5s ease-out forwards;
+        }
+        
+        @keyframes explode {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: scale(20);
+                opacity: 0;
+            }
+        }
+        
+        /* Multiple particles for explosion effect */
+        .particle {
+            position: absolute;
+            background: #ff5e57;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+        }
+        
+        .particle.animate {
+            animation: particle-animation 1s ease-out forwards;
+        }
+        
+        @keyframes particle-animation {
+            0% {
+                transform: translateX(0) translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(var(--x)) translateY(var(--y)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Cloud puff parts */
+        .cloud-puff {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            transform: scale(0);
+            opacity: 0;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+        
+        .cloud-puff.animate {
+            animation: puff-animation 1.5s ease-out forwards;
+        }
+        
+        @keyframes puff-animation {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            40% {
+                opacity: 0.8;
+            }
+            80% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: scale(6);
+                opacity: 0;
+            }
+        }
+        
+        /* Shockwave effect */
+        .shockwave {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            transform: scale(0);
+            opacity: 0;
+        }
+        
+        .shockwave.animate {
+            animation: shockwave-animation 0.8s ease-out forwards;
+        }
+        
+        @keyframes shockwave-animation {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(15);
+                opacity: 0;
+            }
+        }
+        
+        /* Smoke cloud after explosion */
+        .smoke {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: rgba(50, 50, 50, 0.7);
+            border-radius: 40% 60% 60% 40% / 40% 50% 50% 60%;
+            transform: scale(0) translateY(0);
+            opacity: 0;
+        }
+        
+        .smoke.animate {
+            animation: smoke-animation 3s ease-out forwards;
+        }
+        
+        @keyframes smoke-animation {
+            0% {
+                transform: scale(0) translateY(0);
+                opacity: 0;
+                border-radius: 40% 60% 60% 40% / 40% 50% 50% 60%;
+            }
+            20% {
+                opacity: 0.5;
+            }
+            50% {
+                border-radius: 60% 40% 40% 60% / 60% 40% 60% 40%;
+            }
+            80% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: scale(3) translateY(-100px);
+                opacity: 0;
+                border-radius: 40% 60% 30% 70% / 60% 30% 70% 40%;
+            }
+        }
+        
+        /* Controls for animation type */
+        .controls {
+            margin-top: 40px;
+            display: flex;
+            gap: 20px;
+        }
+        
+        .control-btn {
+            padding: 8px 16px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .control-btn:hover {
+            background: #2980b9;
+        }
+        
+        .control-btn.active {
+            background: #2ecc71;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CSS Explosion & Cloud Puff Animation</h1>
+        
+        <div class="button-container">
+            <button id="trigger-animation">BOOM!</button>
+        </div>
+        
+        <div class="explosion-area">
+            <!-- Elements for explosion effect -->
+            <div class="explosion" id="explosion"></div>
+            <div class="shockwave" id="shockwave"></div>
+            
+            <!-- Elements for cloud puff effect -->
+            <div class="cloud-puff" id="puff1" style="left: 35%; top: 40%;"></div>
+            <div class="cloud-puff" id="puff2" style="left: 45%; top: 30%;"></div>
+            <div class="cloud-puff" id="puff3" style="left: 55%; top: 35%;"></div>
+            <div class="cloud-puff" id="puff4" style="left: 50%; top: 50%;"></div>
+            <div class="cloud-puff" id="puff5" style="left: 40%; top: 45%;"></div>
+            
+            <!-- Elements for smoke after explosion -->
+            <div class="smoke" id="smoke1" style="left: 45%; top: 50%;"></div>
+            <div class="smoke" id="smoke2" style="left: 55%; top: 45%;"></div>
+            <div class="smoke" id="smoke3" style="left: 50%; top: 40%;"></div>
+        </div>
+        
+        <div class="controls">
+            <button class="control-btn active" data-type="explosion">Explosion</button>
+            <button class="control-btn" data-type="cloud">Cloud Puff</button>
+            <button class="control-btn" data-type="both">Combined</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const explosionArea = document.querySelector('.explosion-area');
+            const triggerButton = document.getElementById('trigger-animation');
+            const explosion = document.getElementById('explosion');
+            const shockwave = document.getElementById('shockwave');
+            const cloudPuffs = document.querySelectorAll('.cloud-puff');
+            const smokeElements = document.querySelectorAll('.smoke');
+            const controlButtons = document.querySelectorAll('.control-btn');
+            
+            let animationType = 'explosion';
+            let particles = [];
+            let isAnimating = false;
+            
+            // Setup control buttons
+            controlButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    controlButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    animationType = this.dataset.type;
+                });
+            });
+            
+            // Create particles for explosion effect
+            function createParticles() {
+                // Clear old particles
+                particles.forEach(particle => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                });
+                particles = [];
+                
+                // Create new particles
+                for (let i = 0; i < 40; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.width = `${Math.random() * 15 + 5}px`;
+                    particle.style.height = particle.style.width;
+                    particle.style.background = getRandomColor();
+                    
+                    // Calculate random directions
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = Math.random() * 300 + 50;
+                    const x = Math.cos(angle) * distance;
+                    const y = Math.sin(angle) * distance;
+                    
+                    // Set CSS variables for animation
+                    particle.style.setProperty('--x', `${x}px`);
+                    particle.style.setProperty('--y', `${y}px`);
+                    
+                    // Add to DOM
+                    explosionArea.appendChild(particle);
+                    particles.push(particle);
+                }
+            }
+            
+            function getRandomColor() {
+                // Explosion colors
+                const colors = [
+                    '#ff5e57', '#ff3f34', '#ffa801', '#ffd32a', '#ff9ff3', 
+                    '#fffa65', '#f53b57', '#ef5777', '#ffc048'
+                ];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+            
+            function resetAnimation() {
+                // Reset all animation elements
+                
+                // Reset explosion elements
+                explosion.classList.remove('animate');
+                shockwave.classList.remove('animate');
+                particles.forEach(particle => particle.classList.remove('animate'));
+                
+                // Reset cloud puff elements
+                cloudPuffs.forEach(puff => puff.classList.remove('animate'));
+                
+                // Reset smoke elements
+                smokeElements.forEach(smoke => smoke.classList.remove('animate'));
+                
+                // Force reflow to reset animations
+                void explosion.offsetWidth;
+                void shockwave.offsetWidth;
+                particles.forEach(particle => void particle.offsetWidth);
+                cloudPuffs.forEach(puff => void puff.offsetWidth);
+                smokeElements.forEach(smoke => void smoke.offsetWidth);
+                
+                isAnimating = false;
+            }
+            
+            function playExplosion() {
+                // Explosion effect elements
+                explosion.style.background = '#ff3f34';
+                explosion.classList.add('animate');
+                shockwave.classList.add('animate');
+                
+                // Animate particles with slight delay
+                setTimeout(() => {
+                    particles.forEach((particle, index) => {
+                        setTimeout(() => {
+                            particle.classList.add('animate');
+                        }, index * 10);
+                    });
+                }, 100);
+                
+                // Animate smoke with delay
+                setTimeout(() => {
+                    smokeElements.forEach((smoke, index) => {
+                        setTimeout(() => {
+                            smoke.classList.add('animate');
+                        }, index * 150);
+                    });
+                }, 200);
+            }
+            
+            function playCloudPuff() {
+                // Cloud puff effect elements
+                cloudPuffs.forEach((puff, index) => {
+                    setTimeout(() => {
+                        puff.classList.add('animate');
+                    }, index * 100);
+                });
+            }
+            
+            // Button click handler
+            triggerButton.addEventListener('click', function() {
+                if (isAnimating) return;
+                isAnimating = true;
+                
+                // Prepare particles
+                createParticles();
+                
+                // Play appropriate animation
+                if (animationType === 'explosion') {
+                    playExplosion();
+                } else if (animationType === 'cloud') {
+                    playCloudPuff();
+                } else if (animationType === 'both') {
+                    playExplosion();
+                    playCloudPuff();
+                }
+                
+                // Add button effect
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 200);
+                
+                // Reset animation after it's done
+                setTimeout(resetAnimation, 3000);
+            });
+        });
+    </script>
+</body>
+</html>

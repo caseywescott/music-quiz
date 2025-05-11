@@ -489,15 +489,10 @@ h1 {
 
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
-  10% { transform: translateX(-3px); }
-  20% { transform: translateX(3px); }
-  30% { transform: translateX(-2px); }
+  20% { transform: translateX(-2px); }
   40% { transform: translateX(2px); }
-  50% { transform: translateX(-1px); }
-  60% { transform: translateX(1px); }
-  70% { transform: translateX(-1px); }
+  60% { transform: translateX(-1px); }
   80% { transform: translateX(1px); }
-  90% { transform: translateX(-0.5px); }
 }
 
 @keyframes dissolve {
@@ -506,9 +501,9 @@ h1 {
     filter: blur(0);
     visibility: visible;
   }
-  99% {
-    opacity: 0;
-    filter: blur(4px);
+  50% {
+    opacity: 0.5;
+    filter: blur(2px);
     visibility: visible;
   }
   100% {
@@ -519,7 +514,7 @@ h1 {
 }
 
 .answer-button.selected.incorrect {
-  animation: shake 1.2s cubic-bezier(.36,.07,.19,.97) both;
+  animation: shake 0.6s cubic-bezier(.36,.07,.19,.97) both;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   perspective: 1000px;
@@ -529,8 +524,13 @@ h1 {
 .answer-button.selected.incorrect .wooden-frame,
 .answer-button.selected.incorrect .inner-frame,
 .answer-button.selected.incorrect .text-display {
-  animation: shake 1.2s cubic-bezier(.36,.07,.19,.97) both,
-             dissolve 0.8s ease-out 1.2s forwards;
+  animation: shake 0.6s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+/* Separate dissolve animation for incorrect buttons */
+.answer-button.exploded {
+  animation: dissolve 0.6s ease-out forwards;
+  pointer-events: none;
 }
 
 @keyframes popIn {
@@ -1089,6 +1089,11 @@ h1 {
     filter: blur(0);
     visibility: visible;
   }
+  50% {
+    opacity: 0.5;
+    filter: blur(2px);
+    visibility: visible;
+  }
   100% {
     opacity: 0;
     filter: blur(4px);
@@ -1097,18 +1102,44 @@ h1 {
 }
 
 .answer-button:not(.selected) {
-  transition: opacity 0.8s ease-out, filter 0.8s ease-out;
+  transition: opacity 0.6s ease-out, filter 0.6s ease-out;
 }
 
 /* Target all non-selected buttons when any button is selected as correct */
 .options:has(.answer-button.selected.correct) .answer-button:not(.selected) {
-  animation: dissolveNonSelected 0.8s ease-out forwards;
+  animation: dissolveNonSelected 0.6s ease-out forwards;
   pointer-events: none;
 }
 
 /* Ensure dissolved buttons stay dissolved */
 .answer-button.dissolved {
-  opacity: 0;
+  opacity: 0 !important;
   filter: blur(4px);
   pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.6s ease-out, filter 0.6s ease-out;
+}
+
+/* Ensure dissolved buttons stay dissolved during exit animation */
+.quiz-container.exit .answer-button.dissolved {
+  opacity: 0 !important;
+  filter: blur(4px);
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.6s ease-out, filter 0.6s ease-out;
+}
+
+@keyframes bounceOut {
+  0% {
+    transform: translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+  30% {
+    transform: translateX(-20px) rotate(-5deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(1000px) rotate(20deg);
+    opacity: 0;
+  }
 }
