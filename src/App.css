@@ -62,44 +62,9 @@ body::before {
   animation: bounceOut 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-/* Mobile-specific styles */
-@media (max-width: 768px) {
-  .quiz-container {
-    height: 80vw;
-    width: 80vw;
-    max-height: 90vh;
-    max-width: 90vh;
-  }
-
-  .options {
-    top: calc(50% + 200px);
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .answer-button {
-    width: 100%;
-    min-width: unset;
-  }
-
-  .leaderboard-overlay {
-    width: 100%;
-  }
-
-  .leaderboard-toggle {
-    left: 20px !important;
-    top: 20px !important;
-  }
-}
-
-/* Tablet-specific styles */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .quiz-container {
-    height: 65vw;
-    width: 65vw;
-    max-height: 85vh;
-    max-width: 85vh;
-  }
+.vinyl, .vinyl-label {
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
 }
 
 .vinyl {
@@ -113,8 +78,8 @@ body::before {
   background-position: center;
   box-shadow: 0 0 20px 4px rgba(0,0,0,0.6);
   border-radius: 50%;
-  animation: spinThat 5s linear infinite;
-  animation-play-state: paused;
+  animation: fadeIn 0.3s ease forwards, spinThat 5s linear infinite;
+  animation-play-state: running, paused;
 }
 
 .vinyl::before {
@@ -144,8 +109,8 @@ body::before {
   align-items: center;
   z-index: 40;
   pointer-events: auto;
-  animation: counterSpin 5s linear infinite;
-  animation-play-state: paused;
+  animation: fadeIn 0.3s ease forwards, counterSpin 5s linear infinite;
+  animation-play-state: running, paused;
 }
 
 .vinyl.playing .vinyl-label {
