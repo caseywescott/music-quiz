@@ -262,33 +262,31 @@ h1 {
   padding: 0 20px;
 }
 
-/* Add media query for mobile devices */
-@media screen and (max-width: 768px) {
+/* Mobile-specific styles */
+@media (max-width: 768px) {
   body {
     background-color: red !important;
   }
   
+  .quiz-container {
+    height: 75vw;
+    width: 75vw;
+    max-height: 112.5vh;
+    max-width: 112.5vh;
+  }
+  
   .options {
     flex-direction: column;
-    align-items: center;
-    gap: 15px;
     top: calc(50% + 150px);
     width: 100%;
     padding: 0 10px;
+    gap: 15px;
   }
   
   .answer-button {
-    width: 100% !important;
+    width: 100%;
     max-width: 300px;
     margin: 0 auto;
-  }
-
-  .quiz-container {
-    height: 75vw !important;
-    width: 75vw !important;
-    max-height: 112.5vh !important;
-    max-width: 112.5vh !important;
-    border: 20px solid yellow !important;
   }
 }
 
