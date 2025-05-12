@@ -1,3 +1,57 @@
+/* Mobile styles - MUST BE AT TOP */
+@media screen and (max-width: 768px) {
+  body {
+    background-color: red !important;
+  }
+  
+  #wrap {
+    background-color: yellow !important;
+  }
+  
+  .quiz-container {
+    height: 75vw !important;
+    width: 75vw !important;
+    max-height: 112.5vh !important;
+    max-width: 112.5vh !important;
+    border: 20px solid blue !important;
+  }
+
+  .options {
+    position: absolute !important;
+    top: calc(50% + 150px) !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 15px !important;
+    padding: 0 10px !important;
+    z-index: 30 !important;
+  }
+
+  .answer-button {
+    width: 90% !important;
+    min-width: unset !important;
+    max-width: 300px !important;
+    margin: 0 auto !important;
+    border: 5px solid green !important;
+  }
+
+  /* Adjust other mobile-specific styles */
+  .vinyl {
+    background-size: 120% 120%;
+  }
+
+  .vinyl-label {
+    top: 30%;
+    left: 30%;
+    height: 40%;
+    width: 40%;
+  }
+}
+
+/* Base styles for all devices */
 * {
   margin: 0;
   padding: 0;
@@ -260,49 +314,6 @@ h1 {
   justify-content: center;
   align-items: center;
   padding: 0 20px;
-}
-
-/* Mobile styles */
-@media screen and (max-width: 768px) {
-  .quiz-container {
-    height: 75vw !important;
-    width: 75vw !important;
-    max-height: 112.5vh !important;
-    max-width: 112.5vh !important;
-  }
-
-  .options {
-    position: absolute;
-    top: calc(50% + 150px);
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    max-width: 100%;
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 15px;
-    padding: 0 10px;
-    z-index: 30;
-  }
-
-  .answer-button {
-    width: 90% !important;
-    min-width: unset !important;
-    max-width: 300px !important;
-    margin: 0 auto !important;
-  }
-
-  /* Adjust other mobile-specific styles */
-  .vinyl {
-    background-size: 120% 120%;
-  }
-
-  .vinyl-label {
-    top: 30%;
-    left: 30%;
-    height: 40%;
-    width: 40%;
-  }
 }
 
 .footer {
