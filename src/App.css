@@ -262,19 +262,15 @@ h1 {
   padding: 0 20px;
 }
 
-/* Mobile-specific styles */
-@media (max-width: 768px) {
-  body {
-    background-color: red !important;
-  }
-  
+/* Mobile styles */
+@media screen and (max-width: 768px) {
   .quiz-container {
-    height: 75vw;
-    width: 75vw;
-    max-height: 112.5vh;
-    max-width: 112.5vh;
+    height: 75vw !important;
+    width: 75vw !important;
+    max-height: 112.5vh !important;
+    max-width: 112.5vh !important;
   }
-  
+
   .options {
     position: absolute;
     top: calc(50% + 150px);
@@ -288,12 +284,24 @@ h1 {
     padding: 0 10px;
     z-index: 30;
   }
-  
+
   .answer-button {
-    display: block !important;
     width: 90% !important;
+    min-width: unset !important;
     max-width: 300px !important;
     margin: 0 auto !important;
+  }
+
+  /* Adjust other mobile-specific styles */
+  .vinyl {
+    background-size: 120% 120%;
+  }
+
+  .vinyl-label {
+    top: 30%;
+    left: 30%;
+    height: 40%;
+    width: 40%;
   }
 }
 
