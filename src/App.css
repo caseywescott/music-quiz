@@ -103,6 +103,9 @@ body::before {
   border-radius: 50%;
   animation: spinThat 5s linear infinite;
   animation-play-state: paused;
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards, spinThat 5s linear infinite;
+  animation-play-state: running, paused;
 }
 
 .vinyl::before {
@@ -132,12 +135,22 @@ body::before {
   align-items: center;
   z-index: 40;
   pointer-events: auto;
-  animation: counterSpin 5s linear infinite;
-  animation-play-state: paused;
+  animation: fadeIn 0.3s ease forwards, counterSpin 5s linear infinite;
+  animation-play-state: running, paused;
+  opacity: 0;
 }
 
 .vinyl.playing .vinyl-label {
-  animation-play-state: running;
+  animation-play-state: running, running;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes counterSpin {
