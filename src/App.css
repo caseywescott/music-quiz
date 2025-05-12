@@ -52,6 +52,27 @@ body::before {
   background: transparent;
 }
 
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  .quiz-container {
+    height: 80vw;
+    width: 80vw;
+    max-height: 90vh;
+    max-width: 90vh;
+  }
+  
+  .options {
+    flex-direction: column;
+    gap: 20px;
+    top: calc(50% + 350px);
+  }
+  
+  .answer-button {
+    width: 90%;
+    min-width: unset;
+  }
+}
+
 .quiz-container.hidden {
   opacity: 0;
   visibility: hidden;
@@ -845,38 +866,50 @@ h1 {
   position: fixed;
   top: 0;
   left: 0;
-  width: 300px;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.9);
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(5px);
-  z-index: 1000;
-  transform: translateX(-100%);
-  transition: transform 0.3s ease-in-out;
-  border-right: 2px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .leaderboard-overlay.visible {
-  transform: translateX(0);
+  opacity: 1;
+  visibility: visible;
 }
 
 .leaderboard {
-  padding: 20px;
-  height: 100%;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(20, 20, 30, 0.9));
+  border-radius: 20px;
+  padding: 30px;
+  width: 400px;
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.3),
+    inset 0 0 20px rgba(255, 255, 255, 0.1),
+    0 0 30px rgba(255, 215, 0, 0.2);
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  transform: translateY(-20px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.leaderboard-overlay.visible .leaderboard {
+  transform: translateY(0);
+  opacity: 1;
 }
 
 .leaderboard h2 {
-  color: #fff;
+  color: #FFD700;
   text-align: center;
   margin-bottom: 20px;
-  font-size: 1.5em;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 10px;
+  font-size: 2rem;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 .leaderboard-list {
@@ -889,41 +922,42 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 5px;
-  transition: all 0.2s ease;
+  padding: 10px 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  transition: transform 0.2s ease;
 }
 
 .leaderboard-entry:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateX(5px);
+  transform: scale(1.02);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .leaderboard-entry .rank {
+  color: #FFD700;
   font-weight: bold;
-  color: #ffd700;
-  width: 30px;
+  width: 40px;
 }
 
 .leaderboard-entry .name {
-  flex: 1;
-  margin: 0 10px;
+  color: #fff;
+  flex-grow: 1;
+  margin: 0 15px;
 }
 
 .leaderboard-entry .score {
+  color: #FFD700;
   font-weight: bold;
-  color: #4CAF50;
 }
 
 .current-score {
-  margin-top: auto;
-  padding: 15px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 5px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 215, 0, 0.3);
   text-align: center;
+  color: #FFD700;
+  font-size: 1.2rem;
   font-weight: bold;
-  color: #4CAF50;
 }
 
 @keyframes fadeIn {
