@@ -264,6 +264,10 @@ h1 {
 
 /* Add media query for mobile devices */
 @media screen and (max-width: 768px) {
+  body {
+    background-color: red !important;
+  }
+  
   .options {
     flex-direction: column;
     align-items: center;
@@ -280,10 +284,11 @@ h1 {
   }
 
   .quiz-container {
-    height: 75vw !important;  /* 1.5 times larger */
-    width: 75vw !important;   /* 1.5 times larger */
-    max-height: 112.5vh !important;  /* 1.5 times larger */
-    max-width: 112.5vh !important;   /* 1.5 times larger */
+    height: 75vw !important;
+    width: 75vw !important;
+    max-height: 112.5vh !important;
+    max-width: 112.5vh !important;
+    border: 20px solid yellow !important;
   }
 }
 
