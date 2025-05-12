@@ -280,10 +280,10 @@ h1 {
   }
 
   .quiz-container {
-    height: 40vw;
-    width: 40vw;
-    max-height: 60vh;
-    max-width: 60vh;
+    height: 75vw !important;  /* 1.5 times larger */
+    width: 75vw !important;   /* 1.5 times larger */
+    max-height: 112.5vh !important;  /* 1.5 times larger */
+    max-width: 112.5vh !important;   /* 1.5 times larger */
   }
 }
 
