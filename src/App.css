@@ -59,17 +59,24 @@ body::before {
     width: 80vw;
     max-height: 90vh;
     max-width: 90vh;
+    transform: translateY(-200px);
   }
   
   .options {
     flex-direction: column;
     gap: 20px;
-    top: calc(50% + 350px);
+    top: calc(50% + 150px);
+    width: 95%;
   }
   
   .answer-button {
-    width: 90%;
+    width: 100%;
     min-width: unset;
+  }
+
+  .text-display {
+    font-size: 18px;
+    padding: 8px 12px;
   }
 }
 
