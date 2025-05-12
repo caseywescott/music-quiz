@@ -253,40 +253,10 @@ function App() {
   };
 
   return (
-    <>
-      <div 
-        className="background-container"
-        style={{
-          backgroundPosition: `${bgPosition.x}% ${bgPosition.y}%`
-        }}
-      />
-      <img 
-        src="/john.png" 
-        alt="John Lennon" 
-        className={`john-background ${isJohnAnimating ? 'animate' : ''}`}
-        style={{
-          transform: `translateY(${johnPosition}px)`
-        }}
-      />
-      <div className="score-board" onClick={toggleLeaderboard}>
-        <div className="label">Score</div>
-        <div className="value">{score}</div>
-      </div>
-      <div className="volume-control">
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.1"
-          value={volume}
-          onChange={handleVolumeChange}
-          className="volume-slider"
-          title="Adjust volume"
-        />
-      </div>
-      <div className={`leaderboard-overlay ${showLeaderboard ? 'visible' : ''}`} onClick={toggleLeaderboard}>
-        <div className="leaderboard" onClick={e => e.stopPropagation()}>
-          <h2>🏆 Leaderboard</h2>
+    <div id="wrap">
+      <div className={`leaderboard-overlay ${showLeaderboard ? 'visible' : ''}`}>
+        <div className="leaderboard">
+          <h2>Leaderboard</h2>
           <div className="leaderboard-list">
             {leaderboardData.map((entry, index) => (
               <div key={index} className="leaderboard-entry">
@@ -297,19 +267,63 @@ function App() {
             ))}
           </div>
           <div className="current-score">
-            <span>Your Score: {score}</span>
-          </div>
-          <div className="play-stats">
-            <span>Plays this clip: {playCounts[current] || 0}</span>
+            Your Score: {score}
           </div>
         </div>
       </div>
-      <div id="wrap">
+      
+      <button 
+        className="leaderboard-toggle"
+        onClick={toggleLeaderboard}
+        style={{
+          position: 'fixed',
+          left: showLeaderboard ? '310px' : '10px',
+          top: '20px',
+          zIndex: 1001,
+          padding: '10px 15px',
+          background: 'rgba(0, 0, 0, 0.8)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          borderRadius: '5px',
+          color: '#fff',
+          cursor: 'pointer',
+          transition: 'all 0.3s ease'
+        }}
+      >
+        {showLeaderboard ? '← Hide' : 'Show →'}
+      </button>
+
+      <div className={`quiz-container ${isExiting ? 'exit' : ''}`}>
         <div 
-          id="album" 
-          key={`question-${questionKey}`}
-          className={`quiz-container ${isExiting ? 'exit' : ''} ${showLeaderboard ? 'hidden' : ''}`}
-        >
+          className="background-container"
+          style={{
+            backgroundPosition: `${bgPosition.x}% ${bgPosition.y}%`
+          }}
+        />
+        <img 
+          src="/john.png" 
+          alt="John Lennon" 
+          className={`john-background ${isJohnAnimating ? 'animate' : ''}`}
+          style={{
+            transform: `translateY(${johnPosition}px)`
+          }}
+        />
+        <div className="score-board">
+          <div className="label">Score</div>
+          <div className="value">{score}</div>
+        </div>
+        <div className="volume-control">
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.1"
+            value={volume}
+            onChange={handleVolumeChange}
+            className="volume-slider"
+            title="Adjust volume"
+          />
+        </div>
+        <div id="album" key={`question-${questionKey}`} className={`quiz-container ${isExiting ? 'exit' : ''}`}>
           <div id="vinyl" className={`vinyl ${isPlaying ? 'playing' : ''}`}>
             <div className="vinyl-label">
               <div className="wood-circle">
@@ -367,7 +381,7 @@ function App() {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
