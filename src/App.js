@@ -254,6 +254,28 @@ function App() {
 
   return (
     <div id="wrap">
+      <div 
+        className="background-container"
+        style={{
+          backgroundPosition: `${bgPosition.x}% ${bgPosition.y}%`
+        }}
+      />
+      <div className="score-board">
+        <div className="label">Score</div>
+        <div className="value">{score}</div>
+      </div>
+      <div className="volume-control">
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.1"
+          value={volume}
+          onChange={handleVolumeChange}
+          className="volume-slider"
+          title="Adjust volume"
+        />
+      </div>
       <div className={`leaderboard-overlay ${showLeaderboard ? 'visible' : ''}`}>
         <div className="leaderboard">
           <h2>Leaderboard</h2>
@@ -293,12 +315,6 @@ function App() {
       </button>
 
       <div className={`quiz-container ${isExiting ? 'exit' : ''}`}>
-        <div 
-          className="background-container"
-          style={{
-            backgroundPosition: `${bgPosition.x}% ${bgPosition.y}%`
-          }}
-        />
         <img 
           src="/john.png" 
           alt="John Lennon" 
@@ -307,22 +323,7 @@ function App() {
             transform: `translateY(${johnPosition}px)`
           }}
         />
-        <div className="score-board">
-          <div className="label">Score</div>
-          <div className="value">{score}</div>
-        </div>
-        <div className="volume-control">
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.1"
-            value={volume}
-            onChange={handleVolumeChange}
-            className="volume-slider"
-            title="Adjust volume"
-          />
-        </div>
+        
         <div id="album" key={`question-${questionKey}`} className={`quiz-container ${isExiting ? 'exit' : ''}`}>
           <div id="vinyl" className={`vinyl ${isPlaying ? 'playing' : ''}`}>
             <div className="vinyl-label">
